@@ -74,7 +74,6 @@ public class ListGenreUseCaseIT {
     @Test
     public void givenAValidQuery_whenCallsListGenreAndResultIsEmpty_shouldReturnGenres() {
         //given
-        final var genres = List.<Genre>of();
 
         final var expectedPage = 0;
         final var expectedPerPage = 10;

@@ -13,7 +13,7 @@ import com.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import com.fullcycle.admin.catalogo.domain.validation.handler.Notification;
 import com.fullcycle.admin.catalogo.infrastructure.api.CategoryAPI;
-import com.fullcycle.admin.catalogo.infrastructure.api.presenters.CategoryApiPresenter;
+import com.fullcycle.admin.catalogo.infrastructure.category.presenters.CategoryApiPresenter;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.CategoryListResponse;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.CategoryResponse;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryRequest;

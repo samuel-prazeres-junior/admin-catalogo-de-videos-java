@@ -15,12 +15,15 @@ public record GenreOutput(
         Instant updatedAt,
         Instant deletedAt
 ) {
-    public static GenreOutput from(final Genre aGenre){
+
+    public static GenreOutput from(final Genre aGenre) {
         return new GenreOutput(
                 aGenre.getId().getValue(),
                 aGenre.getName(),
                 aGenre.isActive(),
-                aGenre.getCategories().stream().map(CategoryID::getValue).toList(),
+                aGenre.getCategories().stream()
+                        .map(CategoryID::getValue)
+                        .toList(),
                 aGenre.getCreatedAt(),
                 aGenre.getUpdatedAt(),
                 aGenre.getDeletedAt()
