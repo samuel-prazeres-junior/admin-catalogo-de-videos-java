@@ -54,7 +54,8 @@ public class GenreController implements GenreAPI {
             final int page,
             final int perPage,
             final String sort,
-            final String direction) {
+            final String direction
+    ) {
         return this.listGenreUseCase.execute(new SearchQuery(page, perPage, search, sort, direction))
                 .map(GenreApiPresenter::present);
     }

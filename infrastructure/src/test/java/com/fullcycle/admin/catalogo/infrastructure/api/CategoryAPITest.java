@@ -20,7 +20,6 @@ import com.fullcycle.admin.catalogo.domain.validation.Error;
 import com.fullcycle.admin.catalogo.domain.validation.handler.Notification;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryRequest;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.UpdateCategoryRequest;
-import com.fullcycle.admin.catalogo.infrastructure.category.models.UpdateCategoryRequestTest;
 import io.vavr.API;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.List;
 import java.util.Objects;
 
-import static org.mockito.ArgumentMatchers.*;
+import static io.vavr.API.Left;
+import static io.vavr.API.Right;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @ControllerTest(controllers = CategoryAPI.class)
 public class CategoryAPITest {
@@ -250,36 +257,34 @@ public class CategoryAPITest {
 
     @Test
     public void givenACommandWithInvalidID_whenCallsUpdateCategory_shouldReturnNotFoundException() throws Exception {
-        // given
         final var expectedId = "not-found";
         final var expectedName = "Filmes";
         final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = true;
 
+        final var expectedErrorMessage = "Category with ID not-found was not found";
 
-        final var expectedErrorMessage = "'name' should not be null";
+        when(updateCategoryUseCase.execute(any()))
+                .thenThrow(NotFoundException.with(Category.class, CategoryID.from(expectedId)));
 
-        Mockito.when(createCategoryUseCase.execute(any()))
-                .thenThrow(NotFoundException.with(Category.class, CategoryID.from(expectedErrorMessage)));
-
-        final var aCommand = new UpdateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
+        final var aCommand =
+                new UpdateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
 
         // when
-
-        final var request = MockMvcRequestBuilders.put("/categories/{id}", expectedId)
+        final var request = put("/categories/{id}", expectedId)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aCommand));
 
         final var response = this.mvc.perform(request)
-                .andDo(MockMvcResultHandlers.print());
+                .andDo(print());
 
-        //then
-        response.andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.equalTo(expectedErrorMessage)));
+        // then
+        response.andExpect(status().isNotFound())
+                .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)));
 
-        Mockito.verify(updateCategoryUseCase, Mockito.times(1)).execute(argThat(cmd ->
+        verify(updateCategoryUseCase, times(1)).execute(argThat(cmd ->
                 Objects.equals(expectedName, cmd.name())
                         && Objects.equals(expectedDescription, cmd.description())
                         && Objects.equals(expectedIsActive, cmd.isActive())
@@ -391,7 +396,7 @@ public class CategoryAPITest {
         final var expectedPerPage = 10;
         final var expectedTerms = "movies";
         final var expectedSort = "description";
-        final var expectedDirection = "desc";
+        final var expectedDirection = "asc";
         final var expectedItemsCount = 1;
         final var expectedTotal = 1;
 
