@@ -1,4 +1,4 @@
-package com.fullcycle.admin.catalogo.domain.category.genre;
+package com.fullcycle.admin.catalogo.domain.genre;
 
 
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
