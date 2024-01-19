@@ -44,6 +44,7 @@ dependencies {
 
     implementation('com.fasterxml.jackson.module:jackson-module-afterburner')
 
+    testImplementation 'com.github.javafaker:javafaker:1.0.2'
     testImplementation('org.flywaydb:flyway-core')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
