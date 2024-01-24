@@ -6,10 +6,12 @@ import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.exceptions.NotFoundException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 import java.util.Objects;
@@ -39,6 +41,7 @@ public class UpdateCategoryUseCaseTest extends UseCaseTest {
     // 3. Teste atualizando uma categoria para inativa
     // 4. Teste simulando um erro generico vindo do gateway
     // 5. Teste atualizar categoria passando ID inválido
+
 
     @Test
     public void givenAValidCommand_whenCallsUpdateCategory_shouldReturnCategoryId() {
